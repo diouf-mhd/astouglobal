@@ -2,10 +2,20 @@
 $success = session()->getFlashdata('success');
 $error = $error ?? session()->getFlashdata('error');
 $validation = $validation ?? session()->getFlashdata('validation');
+$buildWhatsAppOrderLink = static function (string $name, string $price, string $targetUrl): string {
+    $message = implode("\n", [
+        'Bonjour, je veux commander ce produit : ' . $name . '.',
+        'Prix : ' . $price . '.',
+        'Lien direct : ' . $targetUrl,
+    ]);
+
+    return 'https://wa.me/221770124307?text=' . rawurlencode($message);
+};
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <meta name="google-site-verification" content="qzt0daUc_y-BjS383s3js3KjTKXDIbvWVCJ3ImTuPfo" />
     <meta charset="UTF-8">
     <title>Astou Global Business</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -263,40 +273,40 @@ $validation = $validation ?? session()->getFlashdata('validation');
 
     <div class="row">
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-vetements-1">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/HF1.jpeg') ?>" class="card-img-top" alt="Ensemble chemise et robe">
                 </div>
                 <div class="card-body text-center">
                     <h5>Ensemble chemise et robe</h5>
                     <p>6 000 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Ensemble%20chemise%20et%20robe.%0APrix%20%3A%206%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Ensemble chemise et robe', '6 000 FCFA', base_url('/#accueil-vetements-1'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-vetements-2">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/HF2.jpeg') ?>" class="card-img-top" alt="Ensemble chemise et pantalon">
                 </div>
                 <div class="card-body text-center">
                     <h5>Ensemble chemise et pantalon</h5>
                     <p>6 000 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Ensemble%20chemise%20et%20pantalon.%0APrix%20%3A%206%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Ensemble chemise et pantalon', '6 000 FCFA', base_url('/#accueil-vetements-2'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-vetements-3">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/HF3.jpeg') ?>" class="card-img-top" alt="Ensemble robe et manteau">
                 </div>
                 <div class="card-body text-center">
                     <h5>Ensemble robe et manteau</h5>
                     <p>6 000 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Ensemble%20robe%20et%20manteau.%0APrix%20%3A%206%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Ensemble robe et manteau', '6 000 FCFA', base_url('/#accueil-vetements-3'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
@@ -312,40 +322,40 @@ $validation = $validation ?? session()->getFlashdata('validation');
 
     <div class="row">
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-jalabe-1">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/jalabe2.jpg') ?>" class="card-img-top" alt="Dialabe modele 1">
                 </div>
                 <div class="card-body text-center">
                     <h5>Ensemble chemise et robe</h5>
                     <p>9 000 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Ensemble%20chemise%20et%20robe.%0APrix%20%3A%209%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Ensemble chemise et robe', '9 000 FCFA', base_url('/#accueil-jalabe-1'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-jalabe-2">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/HF4.jpeg') ?>" class="card-img-top" alt="Dialabe modele 2">
                 </div>
                 <div class="card-body text-center">
                     <h5>Dialabe</h5>
                     <p>12 000 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Dialabe.%0APrix%20%3A%2012%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Dialabe', '12 000 FCFA', base_url('/#accueil-jalabe-2'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-jalabe-3">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/dialabe.jpg') ?>" class="card-img-top" alt="Dialabe modele 3">
                 </div>
                 <div class="card-body text-center">
                     <h5>Dialabe</h5>
                     <p>6 000 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Dialabe.%0APrix%20%3A%206%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Dialabe', '6 000 FCFA', base_url('/#accueil-jalabe-3'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
@@ -361,40 +371,40 @@ $validation = $validation ?? session()->getFlashdata('validation');
 
     <div class="row">
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-chaussures-1">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/C1.jpeg') ?>" class="card-img-top" alt="Chaussures femme">
                 </div>
                 <div class="card-body text-center">
                     <h5>Chaussures femme</h5>
                     <p>2 500 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Chaussures%20femme.%0APrix%20%3A%202%20500%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Chaussures femme', '2 500 FCFA', base_url('/#accueil-chaussures-1'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-chaussures-2">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/C2.jpeg') ?>" class="card-img-top" alt="Modele pieds nus">
                 </div>
                 <div class="card-body text-center">
                     <h5>Modele pieds nus</h5>
                     <p>2 500 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Modele%20pieds%20nus.%0APrix%20%3A%2015%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Modele pieds nus', '15 000 FCFA', base_url('/#accueil-chaussures-2'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-chaussures-3">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/C3.jpeg') ?>" class="card-img-top" alt="Chaussures classiques">
                 </div>
                 <div class="card-body text-center">
                     <h5>Chaussures classiques</h5>
                     <p> 2 500 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Chaussures%20classiques.%0APrix%20%3A%2020%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Chaussures classiques', '20 000 FCFA', base_url('/#accueil-chaussures-3'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
@@ -410,40 +420,40 @@ $validation = $validation ?? session()->getFlashdata('validation');
 
     <div class="row">
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-parfums-1">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/P1.jpeg') ?>" class="card-img-top" alt="Liquid Brun">
                 </div>
                 <div class="card-body text-center">
                     <h5>Liquid Brun</h5>
                     <p>8 000 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Liquid%20Brun.%0APrix%20%3A%2010%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Liquid Brun', '10 000 FCFA', base_url('/#accueil-parfums-1'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-parfums-2">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/P2.jpeg') ?>" class="card-img-top" alt="Jean Lowe noir">
                 </div>
                 <div class="card-body text-center">
                     <h5>Jean Lowe noir</h5>
                     <p>8 000 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Jean%20Lowe%20noir.%0APrix%20%3A%2015%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Jean Lowe noir', '15 000 FCFA', base_url('/#accueil-parfums-2'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card">
+            <div class="card" id="accueil-parfums-3">
                 <div class="card-image-wrapper">
                     <img src="<?= base_url('assets/img/blue_chanel.jpg') ?>" class="card-img-top" alt="Blue Chanel">
                 </div>
                 <div class="card-body text-center">
                     <h5>Blue Chanel</h5>
                     <p>6 000 FCFA</p>
-                    <a href="https://wa.me/221770124307?text=Bonjour%2C%20je%20veux%20commander%20%3A%20Blue%20Chanel.%0APrix%20%3A%2020%20000%20FCFA." class="btn btn-success">Commander WhatsApp</a>
+                    <a href="<?= esc($buildWhatsAppOrderLink('Blue Chanel', '20 000 FCFA', base_url('/#accueil-parfums-3'))) ?>" class="btn btn-success">Commander WhatsApp</a>
                 </div>
             </div>
         </div>

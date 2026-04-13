@@ -14,13 +14,13 @@ $products = [
         'image' => 'assets/img/C2.jpeg',
         'alt' => 'Modele pieds nus',
         'name' => 'Modele pieds nus',
-        'price' => '15 000 FCFA',
+        'price' => ' FCFA',
     ],
     [
         'image' => 'assets/img/C3.jpeg',
         'alt' => 'Chaussures classiques',
         'name' => 'Chaussures classiques',
-        'price' => '20 000 FCFA',
+        'price' => '2  500 FCFA',
     ],
     [
         'image' => null,

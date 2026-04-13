@@ -152,25 +152,25 @@
             "price": "2 500 FCFA"
         },
         {
-            "id": "chaussures-2",
-            "image": "assets/img/C2.jpeg",
-            "alt": "Modele pieds nus",
-            "name": "Modele pieds nus",
-            "price": "15 000 FCFA"
-        },
-        {
-            "id": "chaussures-3",
-            "image": "assets/img/C3.jpeg",
-            "alt": "Chaussures classiques",
-            "name": "Chaussures classiques",
-            "price": "20 000 FCFA"
-        },
-        {
             "id": "chaussures-e6b18c57",
             "image": "uploads/products/chaussures/1775040948_7738af0c0a33b4d26f80.jpeg",
             "alt": "d'autres model et couleur disponible",
             "name": "chaussures femme",
             "price": "2 500 FCFA"
+        },
+        {
+            "id": "chaussures-b01d66e3",
+            "image": "uploads/products/chaussures/1775215171_c3d74c37b28ebfff6c14.jpeg",
+            "alt": "pieds nu",
+            "name": "pieds nu",
+            "price": "2 500 FCFA"
+        },
+        {
+            "id": "chaussures-3050307c",
+            "image": "uploads/products/chaussures/1775487841_d49da80d0ffcc4017ead.jpeg",
+            "alt": "chaussures de awa fall",
+            "name": "chaussures de awa fall",
+            "price": "3 000 FCFA"
         }
     ],
     "jalabe": [
@@ -287,13 +287,6 @@
             "alt": "Axe Dark",
             "name": "Axe Dark",
             "price": "6 000 FCFA"
-        },
-        {
-            "id": "parfum-22ed04dc",
-            "image": "uploads/products/parfum/1775040070_4b0a345b4bdf983a671c.jpeg",
-            "alt": "khair",
-            "name": "khair",
-            "price": "7 000 FCFA"
         }
     ]
 }

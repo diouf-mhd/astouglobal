@@ -241,7 +241,7 @@ $oldInput = session()->getFlashdata('old_input') ?? [];
         <div class="row g-4">
             <?php foreach ($products as $product): ?>
                 <div class="col-md-4">
-                    <div class="card">
+                    <div class="card" id="<?= esc($product['anchor'] ?? 'product-' . $product['id']) ?>">
                         <?php if ($isAdmin): ?>
                             <div class="card-actions">
                                 <form method="post" action="<?= base_url('admin/products/delete/' . rawurlencode($category) . '/' . rawurlencode($product['id'])) ?>">
@@ -257,8 +257,7 @@ $oldInput = session()->getFlashdata('old_input') ?? [];
                         <div class="card-body text-center p-4">
                             <h5><?= esc($product['name']) ?></h5>
                             <p><?= esc($product['price']) ?></p>
-                            <?php $message = 'Bonjour, je veux commander : ' . $product['name'] . '. Prix : ' . $product['price'] . '.'; ?>
-                            <a href="https://wa.me/221770124307?text=<?= rawurlencode($message) ?>" class="btn btn-success">Commander sur WhatsApp</a>
+                            <a href="https://wa.me/221770124307?text=<?= rawurlencode($product['whatsapp_message'] ?? '') ?>" class="btn btn-success">Commander sur WhatsApp</a>
                         </div>
                     </div>
                 </div>

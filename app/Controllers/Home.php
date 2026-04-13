@@ -143,11 +143,24 @@ class Home extends BaseController
             ],
         ];
 
+        $products = array_map(function (array $product) use ($category): array {
+            $productId = (string) ($product['id'] ?? '');
+            $product['anchor'] = 'product-' . $productId;
+            $product['url'] = base_url($category . '#' . $product['anchor']);
+            $product['whatsapp_message'] = implode("\n", [
+                'Bonjour, je veux commander ce produit : ' . ($product['name'] ?? '') . '.',
+                'Prix : ' . ($product['price'] ?? '') . '.',
+                'Lien direct : ' . $product['url'],
+            ]);
+
+            return $product;
+        }, $this->catalog->category($category));
+
         return array_merge(
             $themes[$category],
             [
                 'category' => $category,
-                'products' => $this->catalog->category($category),
+                'products' => $products,
             ]
         );
     }
