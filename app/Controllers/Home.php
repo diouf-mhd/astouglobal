@@ -3,9 +3,12 @@
 namespace App\Controllers;
 
 use App\Libraries\ProductCatalog;
+use App\Traits\ApiResponse;
 
 class Home extends BaseController
 {
+    use ApiResponse;
+    
     private ProductCatalog $catalog;
 
     public function __construct()
@@ -163,5 +166,47 @@ class Home extends BaseController
                 'products' => $products,
             ]
         );
+    }
+
+    // API Methods
+    public function apiGetProducts()
+    {
+        $products = [];
+        $categories = ['vetements', 'homme', 'chaussures', 'jalabe', 'parfum'];
+        
+        foreach ($categories as $category) {
+            $products[$category] = $this->catalog->category($category);
+        }
+        
+        return $this->respondSuccess($products, 'Products retrieved successfully');
+    }
+
+    public function apiGetProductsByCategory(string $category)
+    {
+        $validCategories = ['vetements', 'homme', 'chaussures', 'jalabe', 'parfum'];
+        
+        if (!in_array($category, $validCategories)) {
+            return $this->respondNotFound('Category not found');
+        }
+        
+        $products = $this->catalog->category($category);
+        
+        return $this->respondSuccess(['category' => $category, 'products' => $products], 'Products retrieved successfully');
+    }
+
+    public function apiGetProduct(int $id)
+    {
+        $categories = ['vetements', 'homme', 'chaussures', 'jalabe', 'parfum'];
+        
+        foreach ($categories as $category) {
+            $products = $this->catalog->category($category);
+            foreach ($products as $product) {
+                if ($product['id'] === $id) {
+                    return $this->respondSuccess($product, 'Product retrieved successfully');
+                }
+            }
+        }
+        
+        return $this->respondNotFound('Product not found');
     }
 }

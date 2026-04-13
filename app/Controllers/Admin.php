@@ -3,9 +3,12 @@
 namespace App\Controllers;
 
 use App\Libraries\ProductCatalog;
+use App\Traits\ApiResponse;
 
 class Admin extends BaseController
 {
+    use ApiResponse;
+    
     private ProductCatalog $catalog;
 
     /**
@@ -233,4 +236,150 @@ private function updateAdminPassword(string $table, string $phone, string $passw
         ->update();
 }
 
+// API Methods
+public function apiLogin()
+{
+    if ($this->request->getMethod() !== 'post') {
+        return $this->respondError('Method not allowed', 405);
+    }
+
+    $input = $this->request->getJSON();
+    $username = $input->username ?? null;
+    $password = $input->password ?? null;
+
+    if (!$username || !$password) {
+        return $this->respondValidationError([
+            'username' => 'Username is required',
+            'password' => 'Password is required',
+        ]);
+    }
+
+    // Treat username as phone
+    $phone = $this->normalizePhone($username);
+    $admin = $this->findAdminByPhone($phone);
+
+    if (!$admin) {
+        return $this->respondError('Invalid credentials', 401);
+    }
+
+    $storedPassword = trim($admin['mot_de_pass'] ?? '');
+
+    if (!$this->passwordMatches($password, $storedPassword)) {
+        return $this->respondError('Invalid credentials', 401);
+    }
+
+    // Generate a simple token (in production, use JWT)
+    $token = bin2hex(random_bytes(32));
+    session()->set([
+        'admin_id'   => $admin['numero'],
+        'isLoggedIn' => true,
+        'api_token'  => $token,
+    ]);
+
+    return $this->respondSuccess([
+        'token' => $token,
+        'admin_id' => $admin['numero'],
+    ], 'Login successful', 200);
+}
+
+public function apiLogout()
+{
+    session()->remove(['admin_id', 'isLoggedIn', 'api_token']);
+    session()->regenerate(true);
+
+    return $this->respondSuccess(null, 'Logout successful', 200);
+}
+
+public function apiAddProduct()
+{
+    if (!session('isLoggedIn')) {
+        return $this->respondUnauthorized();
+    }
+
+    if ($this->request->getMethod() !== 'post') {
+        return $this->respondError('Method not allowed', 405);
+    }
+
+    $input = $this->request->getJSON();
+    $category = $input->category ?? null;
+    $name = $input->name ?? null;
+    $price = $input->price ?? null;
+    $description = $input->description ?? null;
+
+    if (!$category || !$name || !$price) {
+        return $this->respondValidationError([
+            'category' => 'Category is required',
+            'name' => 'Name is required',
+            'price' => 'Price is required',
+        ]);
+    }
+
+    $validCategories = ['vetements', 'homme', 'chaussures', 'jalabe', 'parfum'];
+    if (!in_array($category, $validCategories)) {
+        return $this->respondError('Invalid category', 422);
+    }
+
+    // Handle file upload if present
+    $image = null;
+    $imageFile = $this->request->getFile('image');
+    
+    if ($imageFile && $imageFile->isValid()) {
+        $uploadDirectory = FCPATH . 'uploads/products/' . $category;
+        
+        if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0777, true) && !is_dir($uploadDirectory)) {
+            return $this->respondError('Failed to create upload directory', 500);
+        }
+
+        $imageName = $imageFile->getRandomName();
+        $imageFile->move($uploadDirectory, $imageName);
+        $image = 'uploads/products/' . $category . '/' . $imageName;
+    }
+
+    $this->catalog->add($category, [
+        'id'    => $category . '-' . bin2hex(random_bytes(4)),
+        'image' => $image,
+        'alt'   => $name,
+        'name'  => $name,
+        'price' => $price,
+        'description' => $description,
+    ]);
+
+    return $this->respondSuccess(null, 'Product added successfully', 201);
+}
+
+public function apiDeleteProduct(string $category, string $id)
+{
+    if (!session('isLoggedIn')) {
+        return $this->respondUnauthorized();
+    }
+
+    if ($this->request->getMethod() !== 'delete') {
+        return $this->respondError('Method not allowed', 405);
+    }
+
+    $validCategories = ['vetements', 'homme', 'chaussures', 'jalabe', 'parfum'];
+    if (!in_array($category, $validCategories)) {
+        return $this->respondError('Invalid category', 422);
+    }
+
+    $product = $this->catalog->find($category, $id);
+    
+    if (!$product) {
+        return $this->respondNotFound('Product not found');
+    }
+
+    $this->catalog->delete($category, $id);
+
+    if ($product !== null) {
+        $image = $product['image'] ?? '';
+        if (str_starts_with($image, 'uploads/products/')) {
+            $imagePath = FCPATH . str_replace('/', DIRECTORY_SEPARATOR, $image);
+            if (is_file($imagePath)) {
+                @unlink($imagePath);
+            }
+        }
+    }
+
+    return $this->respondSuccess(null, 'Product deleted successfully', 200);
+}
 }
